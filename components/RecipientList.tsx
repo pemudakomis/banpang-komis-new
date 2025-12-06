@@ -21,21 +21,6 @@ const RecipientList: React.FC<RecipientListProps> = ({ data }) => {
     );
   }
 
-  // Group data by Alamat (Dusun)
-  const groupedData = data.reduce((acc, person) => {
-    const dusun = person.alamat;
-    if (!acc[dusun]) {
-      acc[dusun] = [];
-    }
-    acc[dusun].push(person);
-    return acc;
-  }, {} as Record<string, Recipient[]>);
-
-  // Get grouped keys (Dusun names)
-  // Since the list might be sliced for pagination, we only show headers if the group changes or it's the start
-  // However, simple approach for pagination: Just iterate the current flat list.
-  // We can insert headers whenever the 'alamat' changes from the previous row.
-
   return (
     <>
       {/* Desktop Table */}
@@ -98,29 +83,35 @@ const RecipientList: React.FC<RecipientListProps> = ({ data }) => {
       </div>
 
       {/* Mobile Cards */}
-      <div className="md:hidden mt-6 space-y-4">
+      <div className="md:hidden mt-4 space-y-4">
         {data.map((person, index) => {
            const showHeader = index === 0 || person.alamat !== data[index - 1].alamat;
 
            return (
              <React.Fragment key={person.pbp || index}>
                 {showHeader && (
-                  <div className="sticky top-0 z-10 bg-gray-100 px-4 py-2 rounded-md font-bold text-gray-700 shadow-sm mt-6">
+                  <div className="sticky top-0 z-10 bg-gray-100/95 backdrop-blur-sm px-4 py-2 rounded-md font-bold text-gray-700 shadow-sm mt-6 border-b border-gray-200">
                     {person.alamat}
                   </div>
                 )}
-                <div className="bg-white rounded-lg shadow-sm border-l-4 border-sky-custom p-4 flex flex-col gap-2">
-                  <div className="flex justify-between items-start">
-                      <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">No. {person.no}</span>
-                      <span className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full">{person.tanggal_lahir}</span>
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex flex-col gap-3 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-sky-500"></div>
+                  
+                  <div className="flex justify-between items-start pl-2">
+                      <span className="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">#{person.no}</span>
+                      <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                        Lahir: {person.tanggal_lahir}
+                      </span>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900">{person.nama}</h3>
-                  <div className="flex flex-col text-sm text-gray-500">
-                     <span>{person.alamat}</span>
+                  
+                  <div className="pl-2">
+                      <h3 className="text-lg font-bold text-gray-900 leading-tight">{person.nama}</h3>
+                      <p className="text-sm text-gray-500 mt-1">{person.alamat}</p>
                   </div>
-                  <div className="mt-2 pt-2 border-t border-gray-100 flex flex-col">
-                    <span className="text-xs text-gray-500 uppercase tracking-wider">Nomor PBP</span>
-                    <span className="text-md font-mono text-royal-blue font-medium">{maskPBP(person.pbp)}</span>
+                  
+                  <div className="mt-1 pt-3 border-t border-gray-50 flex flex-col pl-2">
+                    <span className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Nomor PBP</span>
+                    <span className="text-base font-mono text-royal-blue font-semibold tracking-wide">{maskPBP(person.pbp)}</span>
                   </div>
                 </div>
              </React.Fragment>

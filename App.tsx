@@ -87,17 +87,6 @@ const App: React.FC = () => {
         <p className="text-blue-200 text-sm md:text-base max-w-xl mx-auto">
           Cek nama Anda pada daftar di bawah ini. Pilih Dusun atau gunakan pencarian untuk menemukan data.
         </p>
-
-        {/* Floating Complaint Button (Visible on desktop header) */}
-        <button 
-            onClick={() => setIsComplaintFormOpen(true)}
-            className="hidden md:flex absolute top-6 right-6 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md items-center gap-2 transition-transform hover:scale-105"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-            </svg>
-            Buat Pengaduan
-        </button>
       </header>
 
       {/* Main Content */}
@@ -113,7 +102,7 @@ const App: React.FC = () => {
               <button
                 key={option.value}
                 onClick={() => setSelectedDusun(option.value)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shadow-sm border
+                className={`px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-200 shadow-sm border active:scale-95
                   ${selectedDusun === option.value 
                     ? 'bg-royal-blue text-white border-royal-blue shadow-md transform scale-105' 
                     : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:border-gray-300'}
@@ -123,19 +112,6 @@ const App: React.FC = () => {
               </button>
             ))}
           </div>
-        </div>
-
-        {/* Mobile Complaint Button (Visible below filters on mobile) */}
-        <div className="md:hidden mt-4 flex justify-center mb-8">
-            <button 
-                onClick={() => setIsComplaintFormOpen(true)}
-                className="w-full bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl font-bold shadow-sm flex items-center justify-center gap-2 hover:bg-red-100 transition-colors"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-                </svg>
-                Laporkan Masalah Bantuan
-            </button>
         </div>
 
         <div className="">
@@ -168,7 +144,7 @@ const App: React.FC = () => {
         </div>
       </main>
 
-      <Footer />
+      <Footer onOpenComplaint={() => setIsComplaintFormOpen(true)} />
 
       {/* Complaint Modal */}
       {isComplaintFormOpen && (
